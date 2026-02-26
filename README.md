@@ -1,5 +1,7 @@
 # RedPacket - Minecraft 红包插件（二次开发版）
 
+[English](#english-version) | 中文
+
 一个功能丰富的 Minecraft 红包插件，支持多种红包类型和经济系统集成。本项目基于原版进行二次开发和优化。
 
 ## 📋 项目简介
@@ -276,8 +278,8 @@ RedPacket-master/
 
 ```bash
 # 克隆项目
-git clone https://github.com/your-username/RedPacket-master.git
-cd RedPacket-master
+git clone https://github.com/xiaoxin-zk/RedPacket.git
+cd RedPacket
 
 # 使用 Maven 编译
 mvn clean package
@@ -389,3 +391,311 @@ CREATE TABLE redpacket (
 **最后更新**: 2024
 
 **注意**: 这是一个二次开发版本，在原版基础上进行了优化和改进。
+
+---
+
+<a name="english-version"></a>
+
+# RedPacket - Minecraft Red Packet Plugin (Modified Version)
+
+[中文](#redpacket---minecraft-红包插件二次开发版) | English
+
+A feature-rich Minecraft red packet plugin supporting multiple packet types and economy system integration. This project is a modified version based on the original.
+
+## 📋 Overview
+
+RedPacket is a red packet system plugin designed for Minecraft servers, allowing players to send and receive virtual red packets, enhancing server interactivity and fun.
+
+### Key Features
+
+- 🧧 **Multiple Packet Types**
+  - Common Red Packet: Random amount distribution
+  - JieLong Red Packet: Chinese idiom chain game
+  - Password Red Packet: Requires password to claim
+
+- 💰 **Economy System Integration**
+  - Vault economy system support
+  - PlayerPoints points system support
+  - Flexible currency type selection
+
+- 🗄️ **Database Support**
+  - SQLite (local database)
+  - MySQL (remote database)
+  - Automatic data persistence
+
+- 🎮 **User Friendly**
+  - GUI menu interface
+  - Chat interactive creation
+  - Session management system
+  - Color code support
+
+- ⚙️ **Highly Configurable**
+  - Red packet amount limits
+  - Quantity limits
+  - Expiration time settings
+  - Database configuration
+
+## 🎯 Packet Types
+
+### 1. Common Red Packet
+- Sender sets total amount and packet count
+- System randomly distributes amount for each packet
+- First come first served
+
+### 2. JieLong Red Packet
+- Interactive red packet based on Chinese idiom chain
+- Players need to correctly continue the idiom chain to claim
+- Increases game fun and challenge
+
+### 3. Password Red Packet
+- Requires correct password to claim
+- Suitable for specific groups or events
+- Adds exclusivity to red packets
+
+## 📦 Installation
+
+### Requirements
+
+- **Server**: Spigot/Paper 1.12.2 - 1.20+
+- **Java**: Java 8 or higher
+- **Dependencies** (optional):
+  - Vault (economy system support)
+  - PlayerPoints (points system support)
+
+### Installation Steps
+
+1. **Download Plugin**
+   ```bash
+   # Download latest JAR from Releases
+   # Or compile with Maven
+   mvn clean package
+   ```
+
+2. **Install Plugin**
+   ```bash
+   # Copy JAR file to server plugins directory
+   cp target/RedPacket-3.5.0.jar /path/to/server/plugins/
+   ```
+
+3. **Install Dependencies** (optional)
+   - Download and install Vault plugin
+   - Download and install PlayerPoints plugin
+   - Install any economy plugin (e.g., EssentialsX)
+
+4. **Start Server**
+   - Configuration file will be auto-generated on first start
+   - Config file located at `plugins/RedPacket/config.yml`
+
+5. **Configure Plugin**
+   - Edit `config.yml` to configure database and red packet settings
+   - Reload plugin: `/rp reload`
+
+## ⚙️ Configuration
+
+### Database Configuration
+
+```yaml
+Database:
+  # Database type: sqlite or mysql
+  Type: sqlite
+
+  # SQLite configuration
+  FileName: database.db
+
+  # MySQL configuration (required when using MySQL)
+  IP: localhost
+  Port: 3306
+  UserName: root
+  Password: password
+  DatabaseName: minecraft
+  MySQLArgument: "?useUnicode=true&characterEncoding=utf8"
+
+  # Table name
+  TableName: redpacket
+```
+
+### Red Packet Settings
+
+```yaml
+RedPacket:
+  # Maximum packet count
+  MaxAmount: 10000
+
+  # Maximum total amount
+  MaxMoney: 10000
+
+  # Minimum total amount
+  MinMoney: 1
+
+  # Auto expiration
+  Expired: false
+
+  # Expiration time (milliseconds)
+  ExpiredTime: 4800000  # 80 minutes
+```
+
+## 🎮 Usage Guide
+
+### Basic Commands
+
+```bash
+# Main command (aliases: /fhb, /rp)
+/redpacket [new|get|help]
+
+# Create red packet
+/rp new
+
+# Claim red packet
+/rp get <packet_id>
+
+# View help
+/rp help
+
+# Reload config (admin)
+/rp reload
+```
+
+### Creating Red Packet
+
+1. **Enter Command**
+   ```bash
+   /rp new
+   ```
+
+2. **Select Packet Type**
+   - Enter number in chat to select type
+   - 1: Common red packet
+   - 2: JieLong red packet
+   - 3: Password red packet
+
+3. **Set Parameters**
+   - Enter total amount
+   - Enter packet count
+   - Enter blessing message (optional)
+   - Password red packet requires password
+
+4. **Confirm Send**
+   - System deducts corresponding amount
+   - Generates packet ID
+   - Displays packet info in chat
+
+### Claiming Red Packet
+
+```bash
+# Click red packet link in chat
+# Or use command
+/rp get <packet_id>
+
+# Password red packet requires password
+/rp get <packet_id> <password>
+```
+
+## 🔐 Permissions
+
+### Basic Permissions
+
+```yaml
+# User permission (default all players)
+redpacket.user: true
+
+# Admin permission (default OP)
+redpacket.admin: true
+```
+
+### Detailed Permissions
+
+```yaml
+# Command permissions
+redpacket.command.new: true        # Create red packet
+redpacket.command.get: true        # Claim red packet
+redpacket.command.session: true    # Session management
+redpacket.command.reload: op       # Reload config
+
+# Packet type permissions
+redpacket.set.commonredpacket: true      # Send common red packet
+redpacket.set.jielongredpacket: true     # Send JieLong red packet
+redpacket.set.passwordredpacket: true    # Send password red packet
+
+redpacket.get.commonredpacket: true      # Claim common red packet
+redpacket.get.jielongredpacket: true     # Claim JieLong red packet
+redpacket.get.passwordredpacket: true    # Claim password red packet
+
+# Special permissions
+redpacket.chat.color: op           # Chat color codes
+```
+
+## 🔧 Development
+
+### Build Project
+
+```bash
+# Clone project
+git clone https://github.com/xiaoxin-zk/RedPacket.git
+cd RedPacket
+
+# Build with Maven
+mvn clean package
+
+# Compiled file located at
+# target/RedPacket-3.5.0.jar
+```
+
+### Dependencies
+
+- **Spigot API 1.19.3** - Minecraft server API
+- **Vault API 1.7** - Economy system interface
+- **PlayerPoints 3.2.5** - Points system
+- **MySQL Connector 8.0.30** - MySQL database driver
+- **SQLite JDBC 3.40.0.0** - SQLite database driver
+
+### Tech Stack
+
+- Java 8
+- Maven build tool
+- Spigot/Bukkit API
+- JDBC database connection
+- JSON data processing
+
+## 🤝 Contributing
+
+Issues and Pull Requests are welcome!
+
+### Contribution Guidelines
+
+1. Fork this project
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
+
+## 📄 License
+
+This project is a modified version based on the original project.
+
+Part of the code is from: https://github.com/SeraphJACK/JieLong
+
+## 🙏 Acknowledgments
+
+- Original author: sandtechnology
+- JieLong project: SeraphJACK
+- Spigot community
+- All contributors
+
+## 📮 Contact
+
+For questions or suggestions, please contact via:
+
+- Submit GitHub Issue
+- Post on server forums
+
+## ⚠️ Disclaimer
+
+This plugin is for learning and entertainment purposes only. Do not use for commercial purposes. The developer is not responsible for any issues caused by using this plugin.
+
+---
+
+**Version**: 3.5.0
+**API Version**: 1.20
+**Last Updated**: 2024
+
+**Note**: This is a modified version with optimizations and improvements based on the original.
